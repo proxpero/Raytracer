@@ -1,3 +1,3 @@
 # Raytracer
 
-A description of this package.
+The Ray Tracer Challenge by Jamis Buck in Swift
