@@ -1,12 +1,21 @@
-struct Color: Equatable {
-    let red: Double
-    let green: Double
-    let blue: Double
+import simd
+typealias Color = SIMD3<Double>
 
-    init(_ red: Double, _ green: Double, _ blue: Double) {
-        self.red = red
-        self.green = green
-        self.blue = blue
+extension Color {
+    init(red: Double, green: Double, blue: Double) {
+        self = .init(x: red, y: green, z: blue)
+    }
+
+    var red: Double {
+        self.x
+    }
+
+    var green: Double {
+        self.y
+    }
+
+    var blue: Double {
+        self.z
     }
 
     static let black: Color = .init(0, 0, 0)
@@ -15,22 +24,10 @@ struct Color: Equatable {
     static let blue: Color = .init(0, 0, 1)
 }
 
-func + (c1: Color, c2: Color) -> Color {
-    .init(c1.red + c2.red, c1.green + c2.green, c1.blue + c2.blue)
+extension Color {
+    var pixelString: String {
+        let n: simd_int3 = simd_int3(simd.clamp(self * 255, min: 0, max: 255).rounded(.toNearestOrAwayFromZero))
+        return "\(n.x) \(n.y) \(n.z)"
+    }
 }
 
-func += (c1: inout Color, c2: Color) {
-    c1 = c1 + c2
-}
-
-func - (c1: Color, c2: Color) -> Color {
-    .init(c1.red - c2.red, c1.green - c2.green, c1.blue - c2.blue)
-}
-
-func * (c1: Color, s: Double) -> Color {
-    .init(c1.red * s, c1.green * s, c1.blue * s)
-}
-
-func * (c1: Color, c2: Color) -> Color {
-    .init(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue)
-}

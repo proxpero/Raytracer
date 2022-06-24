@@ -34,7 +34,7 @@ while p.position.y > 0 {
         print("rejecting \(p.position)")
         continue
     }
-    canvas.setPixel(red, col: Int(p.position.x), row: canvas.height - Int(p.position.y))
+    canvas[Int(p.position.x), canvas.height - Int(p.position.y)] = red
 }
 
 try canvas.writePPM(to: "projectile")

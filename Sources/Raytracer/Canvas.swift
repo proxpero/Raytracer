@@ -1,4 +1,4 @@
-import Foundation
+import simd
 
 struct Canvas {
     let width: Int
@@ -13,33 +13,27 @@ struct Canvas {
     }
 
     // Will crash if out of bounds!
-    mutating func setPixel(_ p: Color, col: Int, row: Int) {
-        pixels[row * width + col] = p
-    }
+    subscript(col: Int, row: Int) -> Color {
+        get {
+            pixels[row * width + col]
+        }
 
-    // Will crash if out of bounds!
-    func pixelAt(col: Int, row: Int) -> Color {
-        pixels[row * width + col]
+        set {
+            pixels[row * width + col] = newValue
+        }
     }
 
     var ppm: String {
-        func normalized(_ value: Double) -> Int {
-            return Int(max(0, min(255, (value * 255).rounded())))
-        }
-
-        func pixelString(_ color: Color) -> String {
-            "\(normalized(color.red)) \(normalized(color.green)) \(normalized(color.blue)) "
-        }
-
         var rows: Substring = ""[...]
         for row in 0 ..< height {
             for col in 0 ..< width {
-                let value = pixelString(pixelAt(col: col, row: row))
-                rows.append(contentsOf: value)
+                rows.append(contentsOf: self[col, row].pixelString + " ")
             }
-            rows = rows.dropLast(1)
+
+            rows = rows.dropLast()
             rows.append("\n")
         }
+
         return """
         P3
         \(width) \(height)

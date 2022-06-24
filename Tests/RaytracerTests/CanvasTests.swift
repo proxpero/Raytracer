@@ -14,8 +14,8 @@ final class CanvasTests: XCTestCase {
     func testWritingPixels() {
         var c: Canvas = .init(width: 10, height: 20)
         let red: Color = .init(1, 0, 0)
-        c.setPixel(red, col: 2, row: 3)
-        XCTAssertEqual(c.pixelAt(col: 2, row: 3), red)
+        c[2, 3] = red
+        XCTAssertEqual(c[2, 3], red)
     }
 
     func testPPM() {
@@ -23,9 +23,9 @@ final class CanvasTests: XCTestCase {
         let c1: Color = .init(1.5, 0, 0)
         let c2: Color = .init(0, 0.5, 0)
         let c3: Color = .init(-0.5, 0, 1)
-        c.setPixel(c1, col: 0, row: 0)
-        c.setPixel(c2, col: 2, row: 1)
-        c.setPixel(c3, col: 4, row: 2)
+        c[0, 0] = c1
+        c[2, 1] = c2
+        c[4, 2] = c3
         let expected = """
         P3
         5 3
@@ -37,3 +37,4 @@ final class CanvasTests: XCTestCase {
         XCTAssertEqual(c.ppm, expected)
     }
 }
+
